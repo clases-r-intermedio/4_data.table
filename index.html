@@ -4,7 +4,7 @@
     <title>Capacitación en R y herramientas de productividad</title>
     <meta charset="utf-8" />
     <meta name="author" content="" />
-    <meta name="date" content="2022-05-30" />
+    <meta name="date" content="2022-06-01" />
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
   </head>
   <body>
@@ -24,7 +24,7 @@ class: center, middle
 
 ## Proyecto Estratégico Servicios Compartidos para la Producción Estadística
 
-## Manipulación masiva de datos con el paquete Data.Table 
+## Manipulación masiva de datos con el paquete `data.table`
 
 ### Junio 2022
 
@@ -47,17 +47,16 @@ background-position: 100% 0%
 
 # ¿Por qué data.table?
 
-+ **dplyr** no resulta ser muy eficiente para el procesamiento de grandes cantidades de datos.
++ `dplyr` no resulta ser muy eficiente para el procesamiento de grandes cantidades de datos.
 
-&lt;/br&gt;
 
-+ **data.table** nos permite realizar operaciones de manipulación de datos reduciendo los tiempos de procesamiento de manera significativa.
+.center[&lt;img src="imagenes/hex-dplyr.png" width= "150"/&gt;]
 
-&lt;/br&gt;
-&lt;/br&gt;
-&lt;/br&gt;
 
-.center[&lt;img src="imagenes/data.table_-1.webp" width= "200"/&gt;]
++ `data.table` nos permite realizar operaciones de manipulación de datos reduciendo los tiempos de procesamiento de manera significativa.
+
+
+.center[&lt;img src="imagenes/data.table_-1.webp" width= "180"/&gt;]
 
 ---
 
@@ -67,9 +66,16 @@ background-position: 100% 0%
 
 # También existe dtplyr
 
-Es una adaptación para utilizar **data.table** desde **dplyr** 
+- Es un paquete del universo `tidyverse` para utilizar `data.table` desde con funciones similares a las de `dplyr`.
 
-**ME FALTAN ARGUMENTOS**
+- En un principo tiene la ventaja de facil usabilidad, ya que su sintaxis se asemeja a `dplyr`.
+
+- Sin embargo, no es tan recomendable porque:
+
+1. Pueden haber bugs difíciles de encontrar, ya que el paquete no es tan estable. 
+1. No todas las funciones de `dplyr` están traducidas.
+1. No es posible aprovechar todas las potencialidades de `data.table`.
+
 
 ---
 
@@ -79,19 +85,21 @@ background-position: 100% 0%
 
 # Contenidos de hoy
 
-El objetivo de esta sesión es aprender a manipular datos con el paquete **data.table**.
+El objetivo de esta sesión es aprender a manipular datos con el paquete `data.table`.
 
 &lt;br&gt;
+
+--
 
 Para cumplir con el objetivo, revisaremos los siguientes temas:
 
 --
 
-1. Importar y exportar datos con **data.table**.
+1. Importar y exportar datos con `data.table`.
 
 --
 
-1. Sintaxis básica **data.table**.
+1. Sintaxis básica `data.table`.
 
   1. Manipulación de columnas.
 
@@ -100,8 +108,11 @@ Para cumplir con el objetivo, revisaremos los siguientes temas:
   1. Agrupación y resúmenes de datos.
 
 --
+1. Sintaxis avanzada `data.table`.
 
-1. Unificar tablas con **data.table**.
+  1. Conectando acciones en `data.table`.
+
+  1. Unificar tablas con `data.table`.
 
 ---
 
@@ -111,23 +122,28 @@ background-position: 100% 0%
 
 # Importar y exportar con data.table
 
-**data.table** tiene su propia versión de `read.csv()` que nos permite abrir archivos **.csv** de manera eficiente:
+`data.table` tiene su propia versión de `read.csv()` que nos permite abrir archivos **.csv** de manera eficiente:
 
 - `fread()`
 &lt;br&gt;
 
 ```r
 library(data.table)
+library(dplyr)
+
 # podemos comparar el tiempo de ejecución entre read.csv y fread()
 tictoc::tic()
-censo_viviendas &lt;- readr::read_csv("/home/ricardo/Documents/INE/2.servicios_compartidos/curso_datatable/csv-viviendas-censo-2017/Microdato_Censo2017-Viviendas.csv")
+censo_viviendas &lt;- readr::read_csv("csv-viviendas-censo-2017/Microdato_Censo2017-Viviendas.csv")
 tictoc::toc()
 # 66.472 sec elapsed
 
 tictoc::tic()
-censo_viviendas &lt;- data.table::fread("/home/ricardo/Documents/INE/2.servicios_compartidos/curso_datatable/csv-viviendas-censo-2017/Microdato_Censo2017-Viviendas.csv")
+censo_viviendas &lt;- data.table::fread("csv-viviendas-censo-2017/Microdato_Censo2017-Viviendas.csv")
 tictoc::toc()
 # 2.968 sec elapsed
+
+## estandarizamos los nombres de las variables
+censo_viviendas &lt;- janitor::clean_names(censo_viviendas)
 ```
 
 ---
@@ -138,18 +154,18 @@ background-position: 100% 0%
 
 # Importar y exportar con data.table
 
-**data.table** tiene su propia versión de `write.csv()` que nos permite exportar o guardar archivos **.csv** de manera eficiente:
+`data.table` tiene su propia versión de `write.csv()` que nos permite exportar o guardar archivos **.csv** de manera eficiente:
 
 - `fwrite()`
 &lt;br&gt;
 
 ```r
 tictoc::tic()
-readr::write_csv(censo_viviendas,"/home/ricardo/Documents/INE/2.servicios_compartidos/curso_datatable/csv-viviendas-censo-2017/ejemplo_viviendas.csv")
+readr::write_csv(censo_viviendas,"csv-viviendas-censo-2017/ejemplo_viviendas.csv")
 tictoc::toc()
 # 99.184 sec elapsed
 tictoc::tic()
-data.table::fwrite(censo_viviendas,"/home/ricardo/Documents/INE/2.servicios_compartidos/curso_datatable/csv-viviendas-censo-2017/ejemplo_viviendas.csv")
+data.table::fwrite(censo_viviendas,"csv-viviendas-censo-2017/ejemplo_viviendas.csv")
 tictoc::toc()
 # 1.17 sec elapsed
 ```
@@ -169,21 +185,21 @@ background-position: 100% 0%
 &lt;br&gt;
 
 --
-para eso existen las siguientes funciones:
+Para eso existen las siguientes funciones:
 
 &lt;br&gt;
 
 
 ```r
-DT &lt;- data.table(censo_viviendas)   
+dt_viviendas &lt;- data.table(censo_viviendas)   
 
 # o
 
-DT &lt;- as.data.table(censo_viviendas)
+dt_viviendas &lt;- as.data.table(censo_viviendas)
 
 # o 
 
-setDT(censo_viviendas)
+setdt_(censo_viviendas)
 ```
 
 &lt;br&gt;
@@ -191,7 +207,7 @@ setDT(censo_viviendas)
 
 --
 
-Con esto podremos utilizar la sintaxis básica de **data.table**
+Con esto podremos utilizar la sintaxis básica de `data.table`
 
 ---
 
@@ -250,7 +266,7 @@ background-position: 100% 0%
 
 --
 
--  Nos permite filtrar filas por valores o categorias.
+-  Nos permite filtrar filas por valores o categorías.
 
 --
 
@@ -270,19 +286,19 @@ background-position: 100% 0%
 
 --
 
-filtramos por index las primeras 6 filas
+Filtremos por index las primeras 6 filas
 
 --
 
 
 ```r
-DT[1:6,] 
+dt_viviendas[1:6,] 
 
 # o
 
-DT[1:6]
+dt_viviendas[1:6]
 
-#    REGION PROVINCIA COMUNA DC AREA ZC_LOC ID_ZONA_LOC NVIV P01 P02 P03A P03B P03C P04 P05 CANT_HOG CANT_PER REGION_15R PROVINCIA_15R COMUNA_15R
+#    region provicia comuna dc area zc_loc id_zona_loc nviv p01 p02 p03a cant_per p03b p03c p04 p05 cant_hog cant_per region_15r provicia_15r comuna_15r
 # 1:     15       152  15202  1    2      6       13225    1   3   1    5    3    5   1   4        1        1         15           152      15202
 # 2:     15       152  15202  1    2      6       13225    2   1   3   98   98   98  98  98        0        0         15           152      15202
 # 3:     15       152  15202  1    2      6       13225    3   1   1    5    3    5   2   3        1        4         15           152      15202
@@ -309,9 +325,9 @@ filtremos filas por valores, similar a función `filter()` de `dplyr`
 
 
 ```r
-DT[REGION == 13] 
+dt_viviendas[region == 13] 
 
-#          REGION PROVINCIA COMUNA DC AREA ZC_LOC ID_ZONA_LOC NVIV P01 P02 P03A P03B P03C P04 P05 CANT_HOG CANT_PER REGION_15R PROVINCIA_15R COMUNA_15R
+#          region provicia comuna dc area zc_loc id_zona_loc nviv p01 p02 p03a cant_per p03b p03c p04 p05 cant_hog cant_per region_15r provicia_15r comuna_15r
 #       1:     13       136  13605  1    1      1       12952    1   1   1    1    1    1   3   1        1        4         13           136      13605
 #       2:     13       136  13605  1    1      1       12952    2   1   1    2    3    1   3   1        1        2         13           136      13605
 #       3:     13       136  13605  1    1      1       12952    3   1   1    2    3    1   3   1        1        5         13           136      13605
@@ -321,9 +337,9 @@ Se pueden utilizar los operadores similares a `rbase` o `dplyr`.
 
 
 ```r
-DT[REGION == 13 &amp; AREA == 1]
+dt_viviendas[region == 13 &amp; area == 1]
 
-#         REGION PROVINCIA COMUNA DC AREA ZC_LOC ID_ZONA_LOC NVIV P01 P02 P03A P03B P03C P04 P05 CANT_HOG CANT_PER REGION_15R PROVINCIA_15R COMUNA_15R
+#         region provicia comuna dc area zc_loc id_zona_loc nviv p01 p02 p03a cant_per p03b p03c p04 p05 cant_hog cant_per region_15r provicia_15r comuna_15r
 #      1:     13       136  13605  1    1      1       12952    1   1   1    1    1    1   3   1        1        4         13           136      13605
 #      2:     13       136  13605  1    1      1       12952    2   1   1    2    3    1   3   1        1        2         13           136      13605
 #      3:     13       136  13605  1    1      1       12952    3   1   1    2    3    1   3   1        1        5         13           136      13605
@@ -346,9 +362,9 @@ background-position: 100% 0%
 --
 
 ```r
-DT[order(REGION),]
+dt_viviendas[order(region),]
 
-#          REGION PROVINCIA COMUNA DC AREA ZC_LOC ID_ZONA_LOC NVIV P01 P02 P03A P03B P03C P04 P05 CANT_HOG CANT_PER REGION_15R PROVINCIA_15R COMUNA_15R
+#          region provicia comuna dc area zc_loc id_zona_loc nviv p01 p02 p03a cant_per p03b p03c p04 p05 cant_hog cant_per region_15r provicia_15r comuna_15r
 #       1:      1        14   1405  1    1      1        1726    1   1   4   98   98   98  98  98        0        0          1            14       1405
 #       2:      1        14   1405  1    1      1        1726    2   1   4   98   98   98  98  98        0        0          1            14       1405
 #       3:      1        14   1405  1    1      1        1726    3   1   1    2    1    3   2   1        1        4          1            14       1405
@@ -373,16 +389,50 @@ background-position: 100% 0%
 --
 &lt;br&gt;
 
- - Cargue los datos de vivienda en un objeto llamado `DTvivienda`
+ - Cargue los datos de vivienda en un objeto llamado `dt_viviendas`.
 
 --
 &lt;br&gt;
 &lt;br&gt;
 &lt;br&gt;
 
-- Cree un objeto llamado `Metro` manteniendo, con las herramientas de `data.table`, solo los casos de la región metropolitana.
+- Cree un objeto llamado `metro` manteniendo, con las herramientas de `data.table`, solo los casos de la región metropolitana.
 
 --
+
+- Solución
+
+
+```r
+censo_viviendas &lt;- data.table::fread("csv-viviendas-censo-2017/Microdato_Censo2017-Viviendas.csv")
+
+dt_viviendas &lt;- data.table(censo_viviendas)   
+
+metro &lt;- dt_viviendas[region == 13,]
+```
+
+
+```r
+dt_viviendas[order(region),]
+
+#          region provicia comuna dc area zc_loc id_zona_loc nviv p01 p02 p03a  cant_per p03b p03c p04 p05 cant_hog cant_per region_15r provicia_15r comuna_15r
+#       1:      1        14   1405  1    1      1        1726    1   1   4   98   98   98  98  98        0        0          1            14       1405
+#       2:      1        14   1405  1    1      1        1726    2   1   4   98   98   98  98  98        0        0          1            14       1405
+#       3:      1        14   1405  1    1      1        1726    3   1   1    2    1    3   2   1        1        4          1            14       1405
+#       4:      1        14   1405  1    1      1        1726    4   1   1    2    3    1   2   1        1        3          1            14       1405
+#       5:      1        14   1405  1    1      1        1726    5   1   4   98   98   98  98  98        0        0          1            14       1405
+#      ---                                                                                                                                             
+# 6499570:     16       161  16101 99    1    999        4633   59   1   1    4    3    1   2   1        1        2          8            84       8401
+# 6499571:     16       161  16101 99    1    999        4633   60   9   1   98   98   98  98  98       98       26          8            84       8401
+# 6499572:     16       161  16101 99    1    999        4633   61   1   1    2    3    1   3   1        1        1          8            84       8401
+# 6499573:     16       161  16101 99    1    999        4633   62   2   1    2    3    1   3   1        1        6          8            84       8401
+# 6499574:     16       161  16101 99    1    999        4633   63   1   1    3    3    1   2   1        1        3          8            84       8401
+```
+
+
+
+
+
 
 ---
 
@@ -440,9 +490,9 @@ background-position: 100% 0%
 
 
 ```r
-DT[,"REGION"]
+dt_viviendas[,"region"]
 
-#      REGION
+#      region
 #   1:     15
 #   2:     15
 #   3:     15
@@ -452,9 +502,9 @@ O podemos utilizar un vector con los nombres de las variables como téxto, simil
 
 
 ```r
- DT[,c("REGION","AREA")]
+ dt[,c("region","area")]
 
-#      REGION AREA
+#      region area
 #   1:     15    2
 #   2:     15    2
 #   3:     15    2
@@ -474,17 +524,17 @@ Suma
 
 ```r
 # calculamos la cantidad total de hogares
-DT[,sum(CANT_HOG)]
+dt_viviendas[,sum(cant_hog)]
 
 # 6929655
 ```
 
-o calcular promedios u otras funciones como: `min()`,`max()`, `median()`, `sd()`, entre otras.
+O calcular promedios u otras funciones como: `min()`,`max()`, `median()`, `sd()`, entre otras.
 
 
 ```r
 # calculamos el promedio de hogares por viviendas
-DT[,mean(CANT_HOG)]
+dt_viviendas[,mean(cant_hog)]
 
 # 1.066171
 ```
@@ -503,8 +553,8 @@ exclude: true
 Creamos una tabla
 
 ```r
- DT[,table(AREA)]
-#      AREA
+ dt_viviendas[,table(area)]
+#      area
 #      1       2 
 #     5534161  965413
 ```
@@ -524,7 +574,7 @@ Utilizando `.()` es posible realizar mas de una función, este argumento funcion
 
 ```r
 # calculamos el promedio de hogares por viviendas
-DT[,.(mean(CANT_HOG),sum(CANT_HOG))]
+dt_viviendas[,.(mean(cant_hog),sum(cant_hog))]
 
 #          V1      V2
 # 1: 1.066171 6929655
@@ -535,7 +585,7 @@ Dentro del argumento `.()` podemos asignar nuevos nombres al resumen creado.
 
 ```r
 # calculamos el promedio de hogares por viviendas
- DT[,.(promedio_hogares = mean(CANT_HOG),suma_hogares = sum(CANT_HOG))]
+ dt_viviendas[,.(promedio_hogares = mean(cant_hog),suma_hogares = sum(cant_hog))]
 
 #    promedio_hogares suma_hogares
 # 1:         1.066171      6929655
@@ -551,19 +601,23 @@ background-position: 100% 0%
 
 ## Parametro &lt;span style="color:steelblue"&gt;j&lt;/span&gt;: Funciones específicas  para resumir datos.
 
-Mediante el operador `:=` también podemos crear nuevas columnas, esto es homologo a la funcion `mutate()` de dplyr. 
-- Creamos una variable para calcular el hacinamiento por viviendas, esto es dividiendo la cantidad de personas por la cantidad de piezas `P04`
+Mediante el operador `:=` podemos crear nuevas columnas, esto es homólogo a la funcion `mutate()` de dplyr. 
+- Creamos una variable para calcular el hacinamiento por viviendas, esto es dividiendo la cantidad de personas por la cantidad de dormitorios `p04`
 
 
 ```r
-DTviviendas[,hacinamiento := P04/CANT_PER]
-DTviviendas[,c("P04","CANT_PER","hacinamiento")]
-#         P04 CANT_PER hacinamiento
+dt_viviendas[,hacinamiento := p04/cant_per]
+dt_viviendas[,c("p04","cant_per","hacinamiento")]
+#         p04 cant_per hacinamiento
 #      1:   1        1    1.0000000
 #      2:  98        0          Inf
 #      3:   2        4    0.5000000
 #      4:  98        0          Inf
 ```
+&lt;br&gt;
+
+Pero hay un detalle! que son esos `Inf`?
+
 
 ---
 
@@ -579,9 +633,9 @@ background-position: 100% 0%
 
 
 ```r
-DTviviendas[,hacinamiento := fifelse(P04 != 98,P04/CANT_PER,NA_real_,na= NA)]
-DTviviendas[,c("P04","CANT_PER","hacinamiento")]
- #    P04 CANT_PER hacinamiento
+dt_viviendas[,hacinamiento := fifelse(p04 != 98,p04/cant_per,NA_real_,na= NA)]
+dt_viviendas[,c("p04","cant_per","hacinamiento")]
+ #    p04 cant_per hacinamiento
  # 1:   1        1    1.0000000
  # 2:  98        0           NA
  # 3:   2        4    0.5000000
@@ -600,8 +654,23 @@ background-position: 100% 0%
 
 &lt;br&gt;
 
-Utilizando el objeto `Metro` creado en el ejercicio 1, seleccione las variables COMUNA, NVIV, CANT_HOG y CANT_PER
+- Utilizando el objeto `metro` creado en el primer ejercicio, seleccione las variables comuna, nviv, cant_hog y cant_per, y actualice el objeto `metro`.
 
+--
+&lt;br&gt;
+
+- Cree una variable llamada `dummy_pers` que marque con 0 a las viviendas que no tienen personas y con 1 a las que si.
+
+--
+
+Solución
+
+
+```r
+metro &lt;- metro[,.(comuna, nviv, cant_hog, cant_per),]
+
+metro[,dummy_pers := fifelse(cant_per &gt; 0,1,0)]
+```
 
 ---
 
@@ -636,9 +705,12 @@ background-position: 100% 0%
 
 --
 
-- Esta agrupación siempre se utiliza aplicando funciones específicas a ciertas variables en la Parametro &lt;span style="color:steelblue"&gt;j&lt;/span&gt; para hacer resúmenes de los datos.
+- Esta agrupación siempre se utiliza aplicando funciones específicas a ciertas variables en la parametro &lt;span style="color:steelblue"&gt;j&lt;/span&gt; para hacer resúmenes de los datos.
 
 --
+
+.center[&lt;img src="imagenes/friends.gif" width= "500"/&gt;]
+
 
 ---
 
@@ -648,14 +720,16 @@ background-position: 100% 0%
 
 # Sintaxis básica, ejemplos:
 
-## Parametro &lt;span style="color:green"&gt;by&lt;/span&gt;: Agrupación y resumenes de variables
+## Parametro &lt;span style="color:green"&gt;by&lt;/span&gt;: Agrupación y resúmenes de variables
 
 Debemos entregar el nombre de la variable que nos interesa agrupar en el parametro &lt;span style="color:green"&gt;by&lt;/span&gt; y en el parametro &lt;span style="color:steelblue"&gt;j&lt;/span&gt; la variable y función que queremos realizar.
-- Construiremos una tabla con la media de viviendas por comuna.
+
+- Construiremos una tabla con la media de personas por comuna.
+
 
 ```r
-DTviviendas[,mean(NVIV),by = COMUNA]
-#    COMUNA         V1
+dt_viviendas[,mean(cant_per),by = comuna]
+#    comuna         V1
 # 1:  15202   37.19656
 # 2:  15201  106.93848
 # 3:  15102  125.52426
@@ -669,21 +743,172 @@ background-position: 100% 0%
 
 # Sintaxis básica, ejemplos:
 
-## Parametro &lt;span style="color:green"&gt;by&lt;/span&gt;: Agrupación y resumenes de variables
+## Parametro &lt;span style="color:green"&gt;by&lt;/span&gt;: Agrupación y resúmenes de variables
 
 Si nos interesa obtener una cuenta de categorías agrupadas podemos utilizar la función `.N` en el parametro &lt;span style="color:steelblue"&gt;j&lt;/span&gt;, esto es similar a la función `count()` de `dplyr`. 
 
 * Adicionalmente, si queremos agrupar por mas de una variable se utiliza la función `.()` en el parametro &lt;span style="color:green"&gt;by&lt;/span&gt;
 
 ```r
-DTviviendas[,.N,by = .(AREA, COMUNA)]
-#       AREA COMUNA     N
+dt_viviendas[,.N,by = .(area, comuna)]
+#       area comuna     N
 #  1:    2  15202   697
 #  2:    1  15201   522
 #  3:    2  15201  1396
 ```
 
 ---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Sintaxis avanzada
+
+## Veamos algunos tips un poco mas complejos que nos pueden hacer la vida mas sencilla! 
+
+.center[&lt;img src="imagenes/jedi.gif" width= "400"/&gt;]
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Sintaxis avanzada
+
+## Podemos utilizar todos los parametros simultaneamente:
+
+--
+
+- Usando &lt;span style="color:red"&gt;i&lt;/span&gt; y &lt;span style="color:steelblue"&gt;j&lt;/span&gt;
+
+Obtenemos el promedio de hogares para la región metropolitana
+
+```r
+dt_viviendas[region == 13,mean(cant_hog)]
+
+# 1.038741
+```
+
+--
+
+- Usando &lt;span style="color:red"&gt;i&lt;/span&gt;, &lt;span style="color:steelblue"&gt;j&lt;/span&gt; y &lt;span style="color:green"&gt;by&lt;/span&gt;
+
+Obtenemos el promedio de hogares por area de la región metropolitana,
+
+
+```r
+dt_viviendas[region == 13,mean(cant_hog),by = area]
+
+#    area       V1
+# 1:    1 1.039781
+# 2:    2 1.012985
+```
+
+---
+
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Sintaxis avanzada, conectando acciones:
+
+&lt;br&gt;
+Al igual que el pipe de `dplyr`, `%&gt;%`, existe una manera de conectar acciones en `data.table`.
+&lt;br&gt;
+
+ya sea: 
+
+```r
+DT[ ... ][ ... ][ ... ]
+```
+&lt;br&gt;
+--
+O
+--
+&lt;br&gt;
+
+```r
+DT[ ...
+   ][ ...
+     ][ ...
+       ]
+```
+
+--
+&lt;br&gt;
+
+### Veamos un ejemplo
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Sintaxis avanzada, conectando acciones:
+
+Ejemplo: 
+
+
+```r
+dt_esp &lt;- dt_viviendas[region %in% c(1:10),][,c("area","comuna","cant_per")][,masde_4 := fifelse(cant_per &gt; 4,1,0)]
+dt_esp
+```
+
+O
+
+
+```r
+dt_esp &lt;- dt_viviendas[region %in% c(1:10),
+                       ][,c("area","comuna","cant_per")
+                         ][,masde_4 := fifelse(cant_per &gt; 4,1,0)]
+dt_esp
+```
+
+
+---
+
+background-image: url("imagenes/fondo2.PNG")
+background-size: contain;
+background-position: 100% 0%
+
+# Sintaxis avanzada, uniendo tablas:
+
+Creamos dos tablas, una de conteo de viviendas por comuna y una de conteo de personas por comunas
+
+- Para unir estas tablas se utilizan los corchetes  `[]` y un parametro llamado `on`, donde se define la variable que unifica ambas tablas.
+
+```r
+viv_comuna &lt;- dt_viviendas[,.N,by = .(comuna)]
+
+censo &lt;- data.table::fread("csv-personas-censo-2017/Microdato_Censo2017-Personas.csv")
+
+dt_censo &lt;- as.data.table(censo)
+
+pers_comuna &lt;- dt_censo[,.N,by = comuna]
+```
+
+- Luego los unimos por el ID de las comunas
+
+```r
+viv_comuna[pers_comuna, on = "comuna"]
+
+#     comuna     N    i.N
+#  1:  15202   697    684
+#  2:  15201  1918   2765
+#  3:  15102   948   1255
+#  4:  15101 72641 221364
+```
+
+--
+
+- Este ejemplo es similar a un `left_join()` de dplyr.
+
+---
+
 
 background-image: url("imagenes/fondo2.PNG")
 background-size: contain;
@@ -696,41 +921,16 @@ background-position: 100% 0%
 
 Calcule la media de personas por regiones y comunas.
 
+--
 
----
+- Solución
 
-
-
-background-image: url("imagenes/fondo2.PNG")
-background-size: contain;
-background-position: 100% 0%
-
-# Sintaxis avanzada, uniendo tablas:
-
-Creamos dos tablas una de conteo de viviendas por comuna y una de conteo de personas por comunas
-
-- Para unir estas tablas se utilizan los corchetes  `[]` y un parametro llamado `on`, donde se define la variable que unifica ambas tablas.
 
 ```r
-viv_comuna &lt;- DTviviendas[,.N,by = .(COMUNA)]
-
-pers_comuna &lt;- DTcenso[,.N,by = COMUNA]
-```
-
-- Luego los unimos por el ID de las comunas
-
-```r
-viv_comuna[pers_comuna, on = "COMUNA"]
-
-#     COMUNA     N    i.N
-#  1:  15202   697    684
-#  2:  15201  1918   2765
-#  3:  15102   948   1255
-#  4:  15101 72641 221364
+metro[,mean(cant_per),by = .(region,comuna)]
 ```
 
 ---
-
 
 background-image: url("imagenes/fondo2.PNG")
 background-size: contain;
