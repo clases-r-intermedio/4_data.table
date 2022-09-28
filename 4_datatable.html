@@ -987,7 +987,7 @@ Calcule la media de personas por regiones y comunas.
 
 
 ```r
-metro[,mean(cant_per),by = .(region,comuna)]
+dt_viviendas[,mean(cant_per),by = .(region,comuna)]
 ```
 
 ---

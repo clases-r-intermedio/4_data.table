@@ -1,7 +1,7 @@
 library(data.table)
 library(dplyr)
 
-install.packages("data.table")
+# install.packages("data.table")
 
 # ### cargamos datos
 # censo <- data.table::fread("Untitled/csv-personas-censo-2017/Microdato_Censo2017-Personas.csv")
@@ -10,7 +10,7 @@ install.packages("data.table")
 
 # podemos comparar el tiempo de ejecución entre read.csv y fread()
 # tictoc::tic()
-# censo_viviendas <- readr::read_csv("Untitled/csv-viviendas-censo-2017/Microdato_Censo2017-Viviendas.csv")
+df_censo_viviendas <- readr::read_csv2("data/viviendas/Microdato_Censo2017-Viviendas.csv")
 # tictoc::toc()
 # 66.472 sec elapsed
 
@@ -19,6 +19,8 @@ censo_viviendas <- data.table::fread("data/viviendas/Microdato_Censo2017-Viviend
 tictoc::toc()
 # 2.968 sec elapsed
 
+censo_viviendas
+
 censo_viviendas <- janitor::clean_names(censo_viviendas)
 names(censo_viviendas)
 
@@ -26,11 +28,14 @@ censo_viviendas[1:6,1:10]
 
 censo_viviendas[1:6]
 
+
 # R base
 censo_viviendas[censo_viviendas$region == 13,]
 
 # data.table
 censo_viviendas[region == 13]
+
+dt_viviendas <- censo_viviendas
 
 dt_viviendas[region == 13 & area == 1]
 
@@ -110,10 +115,21 @@ dt_viviendas[cant_hog != 98,.(promedio_hogares = mean(cant_hog),suma_hogares = s
 
 
 # Mediante el operador `:=` también podemos crear nuevas columnas:
-tictoc::tic()
 
 dt_viviendas[,hacinamiento := p04/cant_per]
+
+censo_viviendas <- censo_viviendas %>% 
+  mutate(hacinamietno = p04/cant_per)
+
+dt_viviendas[,hacinamiento := NULL]
+
+dt_viviendas[,.(hacinamiento = p04/cant_per)]
+
 dt_viviendas[,c("p04","cant_per","hacinamiento")]
+
+tictoc::tic()
+dt_viviendas[,hacinamiento := p04/cant_per]
+tictoc::toc()
 
 tictoc::tic()
 censo_viviendas <- censo_viviendas %>% mutate(hacinamiento = p04/cant_per)
@@ -273,7 +289,8 @@ DT[ ...
 
 dt_viviendas[,hacinamiento := fifelse(p04 != 98,p04/cant_per,NA_real_,na= NA)][,mean(hacinamiento,na.rm = T),by=region][,mean(V1)]
 
-dt_viviendas[,hacinamiento := fifelse(p04 != 98,p04/cant_per,NA_real_,na= NA)][,pers_hog := fifelse(cant_hog != 98,cant_hog/cant_per,NA_real_,na= NA)]
+dt_viviendas[,hacinamiento := fifelse(p04 != 98,p04/cant_per,NA_real_,na= NA)][
+  ,pers_hog := fifelse(cant_hog != 98,cant_hog/cant_per,NA_real_,na= NA)]
 
 
 ## Concatenando acciones 
@@ -285,6 +302,10 @@ dt_esp <- dt_viviendas[region %in% c(1:10),
                        ][,c("area","comuna","cant_per")
                          ][,masde_4 := fifelse(cant_per > 4,1,0)]
 dt_esp
+
+
+
+
 
 
 # Si por ejemplo queremos calcular el porcentaje en variables categóricas
