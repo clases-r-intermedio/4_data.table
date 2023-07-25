@@ -1,0 +1,237 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Tarea final},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{Tarea final}
+\author{}
+\date{\vspace{-2.5em}2023-07-21}
+
+\begin{document}
+\maketitle
+
+\hypertarget{loguxedstica}{%
+\section{Logística}\label{loguxedstica}}
+
+Debes empujar tu trabajo final a la carpeta tarea\_final de la rama
+tareas a más tardar el hasta las 23:59. Solo debes empujar código al
+repositorio.
+
+Tu envío debe ser una carpeta con tu nombre y apellidos (ej:
+pedro\_muñoz\_gonzalez). La estructura de la carpeta debe ser la
+siguiente:
+
+\begin{itemize}
+\tightlist
+\item
+  \emph{main.R}: script principal. Desde acá debes llamar a tus
+  funciones
+\item
+  \emph{functions.R}: funciones que generes para hacer la tarea
+\item
+  .Rproj (obligatorio)
+\end{itemize}
+
+\hypertarget{encabezado}{%
+\section{Encabezado}\label{encabezado}}
+
+Tu jefatura te pide un reporte sobre algunos datos de la Encuesta
+Suplementaria de Ingresos (ESI). Un requisito es que el trabajo sea lo
+más reproducible posible y que sea autocontenido, es decir, que pueda
+ejecutarse desde principio a fin por otros usuarios y usuarias de R.
+Para esta tarea, \textbf{el uso de proyectos es obligatorio}.
+
+Al realizar la tarea, ten en mente que idealmente tu trabajo debería
+permitir que otra persona pueda hacer pull (o clonar) y ejecutar tu
+código sin tener demasiados problemas. Incluir cosas de este tipo es una
+buena idea y significa que estás siendo amable con tus colegas. Nota:
+Una manera de mejorar considerablemente la reproducibilidad es utilizar
+ambientes virtuales. Esto no es un requisito de la tarea y no se
+considerará en la evaluación, pero te recomiendo revisar de qué se
+trata. En R existen, al menos, 2 paquetes que implementan ambientes
+virtuales: renv y packrat. Si decides trabajar con un ambiente virtual,
+por favor, utiliza renv y no packrat.
+
+\hypertarget{instrucciuxf3n-general}{%
+\section{Instrucción general}\label{instrucciuxf3n-general}}
+
+Considerando el volumen de datos, los ejercicios podrían resolverse
+mediante soluciones manuales adhoc. Este tipo de soluciones no se
+considerará correcto. Se espera que el código sea capaz de resolver la
+tarea para n casos.
+
+\hypertarget{ejercicio-1descargar-archivos}{%
+\section{Ejercicio 1:descargar
+archivos}\label{ejercicio-1descargar-archivos}}
+
+Tu jefatura valora mucho la reproducibilidad, de modo que te entrega
+algunas url, que deberás usar para descargar los datos desde la página
+institucional del INE.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{urls }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"https://www.ine.cl/docs/default{-}source/encuesta{-}suplementaria{-}de{-}ingresos/bbdd/csv\_esi/2021/esi{-}2021{-}{-}{-}personas.csv?sfvrsn=d03ae552\_4\&download=true"}\NormalTok{,}
+\StringTok{"https://www.ine.cl/docs/default{-}source/encuesta{-}suplementaria{-}de{-}ingresos/bbdd/csv\_esi/2020/esi{-}2020{-}{-}{-}personas.csv?sfvrsn=fb1f7e0c\_4\&download=true"}\NormalTok{,}
+\StringTok{"https://www.ine.cl/docs/default{-}source/encuesta{-}suplementaria{-}de{-}ingresos/bbdd/csv\_esi/2019/esi{-}2019{-}{-}{-}personas.csv?sfvrsn=9eb52870\_8\&download=true"}\NormalTok{,}
+\StringTok{"https://www.ine.cl/docs/default{-}source/encuesta{-}suplementaria{-}de{-}ingresos/bbdd/csv\_esi/2018/esi{-}2018{-}{-}{-}personas.csv?sfvrsn=a5de2b27\_6\&download=true"}\NormalTok{,}
+\StringTok{"https://www.ine.cl/docs/default{-}source/encuesta{-}suplementaria{-}de{-}ingresos/bbdd/csv\_esi/2017/1esi{-}2017{-}{-}{-}personas.csv?sfvrsn=d556c5a1\_6\&download=true"}\NormalTok{,}
+\StringTok{"https://www.ine.cl/docs/default{-}source/encuesta{-}suplementaria{-}de{-}ingresos/bbdd/csv\_esi/2016/esi{-}2016{-}{-}{-}personas.csv?sfvrsn=81beb5a\_6\&download=true"}
+\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+• Lo primero que haremos será encontrar los nombres de los archivos
+dentro de las url. Utilizando expresiones regulares, crea un vector
+llamado file\_names que almacene la porción de las url que contiene el
+nombre de los archivos que luego descargaremos (ej:
+esi-2021---personas.csv). Para esto, crea una función llamada
+extract\_name. extract\_name debe recibir una url y devolver el nombre
+del archivo. ¡No olvides utilizar purrr en tu solución para el vector de
+nombres! • Crea una función llamada download\_esi\_data para descargar
+un archivo. La función debe recibir 3 parámetros: url, file\_name y
+directory. • Usando purrr, las url y el vector de nombres, descarga
+todos los archivos en una carpeta llamada data en tu directorio de
+trabajo. No está permitido el uso de rutas absolutas. Ejercicio 2: leer
+archivos Ahora cargaremos los archivos en la sesión. Recuerda que no
+necesariamente todos los archivos tienen el mismo separador. • Crea una
+función llamada read\_esi\_data que lea un archivo. La función recibe
+como argumento la ruta del archivo (ej: data/esi-2018---personas.csv).
+read\_esi\_data debe ser capaz de reconocer el tipo de separador y leer
+el archivo correctamente en todos los casos. Para lograr esto existen
+varios caminos. Dependiendo de las versiones de tus dependencias, es
+posible que tengas dificultades para usar readr::read\_csv. Si tienes
+problemas, considera utilizar otras funciones para leer archivos
+Ejercicio 3: obtener datos Tu jefatura está interesada en conocer
+algunas características sobre las variables de diseño y sobre la
+variable principal de ingresos (ing\_t\_p ). Para ello, te solicita lo
+siguiente: • Tabla que contenga 3 columnas: version, n\_personas (idrph)
+y n\_hogares (id\_identificacion). En la columna version debes usar la
+siguiente estructura: esi\_\{año\}. Ejemplo: esi\_2017 • Tabla que
+contenga mínimo, máximo, media, mediana, p10 y p90 del factor de
+expansión (fact\_cal\_esi) para cada versión. Debes considerar una fila
+por hogar (id\_identificacion) e incluir la columna version ¿Se observan
+algunos pesos de muestreo atípicos? • Tabla que contenga el número de
+estratos (estrato) con una sola unidad primaria de muestro
+(conglomerado). Debes incluir la columna version. • Tabla que contenga
+mínimo, máximo, media, mediana, p10 y p90 de los ingresos del trabajo
+principal (ing\_t\_p) para cada versión. Esta tabla debe ser construida
+a nivel persona, utilizando el factor de expansión (fact\_cal\_esi).
+Ejercicio 4: mejorando el código Tu jefatura está muy satisfecha con los
+resultados obtenidos, pero está preocupada por el tiempo de ejecución y
+te pregunta si es posible crear un código más eficiente. Para ello, te
+solicita comparar el tiempo de ejecución de algunas estrategias. Utiliza
+el paquete microbenchmark, cuyo uso básico se describe aquí. Nota: No es
+necesario que utilices más de 5 iteraciones para calcular el tiempo de
+ejecución. Calcula el promedio de ingresos en las tablas de la ESI
+(ing\_t\_p) mediante las siguientes estrategias: 1. Lista de tablas:
+calcular promedio con herramientas de purrr (como en el ejercicio
+anterior) 2 2. Tablas apiladas: calcular promedio con group\_by()
+\%\textgreater\% summarise() (apila una tabla sobre otra en un
+dataframe) 3. Lista de tablas: calcular promedio con herramientas de
+purrr, utilizando una función creada por ti, que utilice data.table. 4.
+Tablas apiladas: calcular promedio con data.table ¿Existen diferencias
+importantes entre las distintas estrategias? ¿Hay alguna más eficiente
+que otra? ¿Usar group\_by versus map hace alguna diferencia? Luego de
+terminar, tu jefatura está tan complacida con tu trabajo que decide
+regalarte un pasaje a Cancún a un hotel all-inclusive :)
+
+\end{document}

@@ -25,11 +25,9 @@ class: center, middle
 
 ## Capacitación en R y herramientas de productividad - nivel intermedio
 
-## Proyecto Estratégico Metodologías y Ciencia de Datos para la Producción Estadística
+## Proyecto Ciencia de Datos
 
 ## Manipulación masiva de datos con el paquete `data.table`
-
-### Septiembre 2022
 
 ```{r setup, include=FALSE}
 options(htmltools.dir.version = TRUE)
@@ -1286,8 +1284,6 @@ class: center, middle
 
 ## Capacitación en R y herramientas de productividad - nivel intermedio
 
-## Proyecto Estratégico Metodologías y Ciencia de Datos para la Producción Estadística
+## Proyecto Ciencia de Datos
 
 ## Manipulación masiva de datos con el paquete `data.table`
-
-### Septiembre 2022

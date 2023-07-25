@@ -142,6 +142,12 @@ dt_viviendas[,c("p04","cant_per","hacinamiento")]
 
 dt_viviendas[,mean(hacinamiento,na.rm = T)]
 
+# tabla personas
+censo <- data.table::fread("data/personas/Microdato_Censo2017-Personas.csv")
+censo <- janitor::clean_names(censo)
+dt_censo <- as.data.table(censo)
+
+
 #### también posee una alternativa para case_when()
 tictoc::tic()
 dt_censo[, residencia_habitual := fcase(p10 == 1, "En esta vivienda",
@@ -193,6 +199,10 @@ tictoc::tic()
 dt_viviendas[,mean(cant_per),by = comuna]
 tictoc::toc()
 
+dt_viviendas[,mean(cant_per),by = "comuna"]
+
+
+
 tictoc::tic()
 censo_viviendas %>% group_by(comuna) %>% summarise(prom_viv = mean(nviv))
 tictoc::toc()
@@ -206,7 +216,7 @@ dt_viviendas[,.N,by = .(area, comuna)]
 tictoc::toc()
 
 tictoc::tic()
-censo_viviendas %>% group_by(area,comuna) %>% count()
+censo_viviendas %>% count(area,comuna) 
 tictoc::toc()
 
 
@@ -215,11 +225,18 @@ censo <- data.table::fread("data/personas/Microdato_Censo2017-Personas.csv")
 censo <- janitor::clean_names(censo)
 dt_censo <- as.data.table(censo)
 
+
 ## .SD 
+dt_iris <- data.table(iris)
+
 # como funciona por detras
 dt_iris[,print(.SD),by = Species]
+dt_iris[,.SD,by = Species]
 
-dt_iris <- data.table(iris)
+
+
+
+
 
 # extraemos la 1 primera filas de cada especie
 dt_iris[,.SD[1],by=Species]
@@ -247,6 +264,11 @@ dt_iris[,.SD[1:3],.SDcols=patterns("Sepal")]
 # extraemos la primera fila de cada especie, es un poco mas novedoso
 dt_iris[,lapply(.SD,mean),.SDcols=patterns("Sepal"), by = Species]
 
+dt_iris[,print(lapply(.SD,.(media = mean,mediana =median))),by = Species]
+
+dt_iris[,lapply(.SD,mean),by = Species]
+
+
 un<- Sys.time()
 dt_iris[,lapply(.SD,mean),by = Species]
 do<- Sys.time()
@@ -257,10 +279,21 @@ dt_iris[,purrr::map(.SD,mean),by = Species]
 do<- Sys.time()
 do-un
 
+
+dt_iris[,c(.N,lapply(.SD,mean),.(c(x,y)=lapply(.SD,median)),lapply(.SD,max)),.SDcols=patterns("Sepal"), by = Species]
+
+
+dt_viviendas[,mean(cant_per),by = .(region,comuna)]
+
+dt_viviendas[,mean(cant_per),by = .(comuna)]
+
+#dt_viviendas[,unique(cant_per)]
+
+
+
 ### parametro keyby
 
 dt_viviendas[,.N,by=region]
-
 
 dt_viviendas[,.N,keyby=region]
 
@@ -290,7 +323,7 @@ DT[ ...
 dt_viviendas[,hacinamiento := fifelse(p04 != 98,p04/cant_per,NA_real_,na= NA)][,mean(hacinamiento,na.rm = T),by=region][,mean(V1)]
 
 dt_viviendas[,hacinamiento := fifelse(p04 != 98,p04/cant_per,NA_real_,na= NA)][
-  ,pers_hog := fifelse(cant_hog != 98,cant_hog/cant_per,NA_real_,na= NA)]
+  ,pers_hog := fifelse(cant_hog != 98,cant_hog/cant_per,NA_real_,na= NA)][]
 
 
 ## Concatenando acciones 
@@ -305,6 +338,11 @@ dt_esp
 
 
 
+dt_viviendas %>% 
+  .[region %in% c(1:10),] %>% 
+  .[,c("area","comuna","cant_per")] %>% 
+  .[,masde_4 := fifelse(cant_per > 4,1,0)] %>% 
+  .[]
 
 
 
@@ -317,6 +355,7 @@ dt_censo[,.N,by=comuna][
   ,Porc := round(100*N/sum(N),2)
 ][]
 tictoc::toc()
+
 
 ### como lo hariamos con dplyr
 
@@ -332,9 +371,18 @@ tictoc::toc()
 dt_censo[,{
   tot = .N
   .SD[,.(perc = round(100*.N/sum(tot),2)),by=p08 ]
+},by=region][]
+
+
+dt_censo[,{
+  tot = .N
+  .SD[,.(perc = round(100*.N/sum(tot),2)),by=p08 ]
 },by=region][,barplot(perc,p08),by=region]
 
-
+map(lista,function(x){
+  
+  
+} )
 
 ### joining data
 # Creamos dos tablas una de conteo de viviendas por comuna y una de conteo de personas por comunas
@@ -348,7 +396,7 @@ viv_comuna[pers_comuna, on = "comuna"]
 pers_comuna[viv_comuna, on = "comuna"]
 
 
-censo[vivienda[,c("id_manzana","area")], on = "id_manzana"]
+# censo[vivienda[,c("id_manzana","area")], on = "id_manzana"]
 
 
 dt_viviendas[,mean(cant_per, na.rm = T),.(comuna, nviv)]
@@ -356,7 +404,11 @@ dt_viviendas[,mean(cant_per, na.rm = T),.(comuna, nviv)]
 
 # ejercico final
 
-dt_viviendas[,.(personas = sum(cant_per)),by=.(comuna,region)][,.SD[which.max(personas)],by = region]
+dt_viviendas[, list(suma_per = sum(cant_per)), by=.(region, comuna)][order(suma_per),.SD[.N], keyby=region]
+
+dt_viviendas[,.(personas = sum(cant_per)),by=.(comuna,region)][,.SD[which.max(personas)],keyby = region]
+
+dt_censo[,.(personas = .N),by=.(comuna,region)][,.SD[which.max(personas)],keyby = region]
 
 comunas <- read.csv2("C:/Users/Ricardo/Documents/INE/Clases R/Intermedio/data.table_intermedio/data/personas/etiquetas_persona_comuna_15r.csv")
 
