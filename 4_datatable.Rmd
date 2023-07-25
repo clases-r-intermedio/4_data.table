@@ -36,6 +36,12 @@ knitr::opts_chunk$set(message = FALSE)
 
 ```{r xaringan-themer, include=FALSE, warning=FALSE}
 library(xaringanthemer)
+library(xaringanExtra)
+
+
+xaringanExtra::use_clipboard()
+xaringanExtra::use_panelset()
+
 #style_duo_accent(
  # primary_color = "#1381B0",
   #secondary_color = "#FF961C",
