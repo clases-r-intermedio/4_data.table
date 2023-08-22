@@ -87,21 +87,19 @@ principal de ingresos (*ing_t_p*). Para ello, te solicita lo siguiente:
 - Tabla que contenga 3 columnas: *version*, *n_personas* (*idrph*) y *n_hogares* (*id_identificacion*). En la
 columna *version* debes usar la siguiente estructura: esi_{año}. Ejemplo: esi_2017
 
-- Tabla que contenga mínimo, máximo, media, mediana, p10 y p90 del factor de expansión (*fact_cal_esi*)
-para cada versión. Debes considerar una fila por hogar (*id_identificacion*) e incluir la columna version
-¿Se observan algunos pesos de muestreo atípicos?
+- Tabla que contenga mínimo, máximo, media, mediana, p10 y p90 del factor de expansión (*fact_cal_esi*) a nivel de hogar (*id_identificacion*)
+para cada versión, debes incluir la columna versión. ¿Se observan algunos pesos de muestreo atípicos?
 
-- Tabla que contenga el número de estratos (*estrato*) con una sola unidad primaria de muestro (*conglomerado*). Debes incluir la columna version.
+- Tabla que contenga el número de estratos (*estrato*) con una sola unidad primaria de muestro (*conglomerado*). Debes incluir la columna versión.
 
-- Tabla que contenga mínimo, máximo, media, mediana, p10 y p90 de los ingresos del trabajo principal
-(*ing_t_p*) para cada versión. Esta tabla debe ser construida a nivel persona, utilizando el factor de
-expansión (*fact_cal_esi*).
+- Tabla que contenga mínimo, máximo, media, mediana, p10 y p90 de los ingresos del trabajo principal a nivel de personas (*ing_t_p*) para cada versión.
+
 
 # Ejercicio 4: mejorando el código
 
 Tu jefatura está muy satisfecha con los resultados obtenidos, pero está preocupada por el tiempo de ejecución
 y te pregunta si es posible crear un código más eficiente. Para ello, te solicita comparar el tiempo de ejecución
-de algunas estrategias. Utiliza el paquete `microbenchmark`, cuyo uso básico se describe aquí.
+de algunas estrategias. Utiliza el paquete `microbenchmark`, cuyo uso básico se describe [aquí](https://lukesingham.com/benchmarking-the-performance-of-r-code/).
 
 **Nota**: No es necesario que utilices más de **5 iteraciones** para calcular el tiempo de ejecución.
 

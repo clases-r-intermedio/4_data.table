@@ -467,17 +467,15 @@ las variables de diseño y sobre la variable principal de ingresos
 (<em>id_identificacion</em>). En la columna <em>version</em> debes usar
 la siguiente estructura: esi_{año}. Ejemplo: esi_2017</p></li>
 <li><p>Tabla que contenga mínimo, máximo, media, mediana, p10 y p90 del
-factor de expansión (<em>fact_cal_esi</em>) para cada versión. Debes
-considerar una fila por hogar (<em>id_identificacion</em>) e incluir la
-columna version ¿Se observan algunos pesos de muestreo
-atípicos?</p></li>
+factor de expansión (<em>fact_cal_esi</em>) a nivel de hogar
+(<em>id_identificacion</em>) para cada versión, debes incluir la columna
+versión. ¿Se observan algunos pesos de muestreo atípicos?</p></li>
 <li><p>Tabla que contenga el número de estratos (<em>estrato</em>) con
 una sola unidad primaria de muestro (<em>conglomerado</em>). Debes
-incluir la columna version.</p></li>
+incluir la columna versión.</p></li>
 <li><p>Tabla que contenga mínimo, máximo, media, mediana, p10 y p90 de
-los ingresos del trabajo principal (<em>ing_t_p</em>) para cada versión.
-Esta tabla debe ser construida a nivel persona, utilizando el factor de
-expansión (<em>fact_cal_esi</em>).</p></li>
+los ingresos del trabajo principal a nivel de personas
+(<em>ing_t_p</em>) para cada versión.</p></li>
 </ul>
 </div>
 <div id="ejercicio-4-mejorando-el-código" class="section level1">
@@ -486,7 +484,7 @@ expansión (<em>fact_cal_esi</em>).</p></li>
 está preocupada por el tiempo de ejecución y te pregunta si es posible
 crear un código más eficiente. Para ello, te solicita comparar el tiempo
 de ejecución de algunas estrategias. Utiliza el paquete
-<code>microbenchmark</code>, cuyo uso básico se describe aquí.</p>
+<code>microbenchmark</code>, cuyo uso básico se describe <a href="https://lukesingham.com/benchmarking-the-performance-of-r-code/">aquí</a>.</p>
 <p><strong>Nota</strong>: No es necesario que utilices más de <strong>5
 iteraciones</strong> para calcular el tiempo de ejecución.</p>
 <p>Calcula el promedio de ingresos en las tablas de la ESI

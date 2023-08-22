@@ -1285,6 +1285,18 @@ class: center, middle
 .linea-inferior[]
 
 
+## Explicación tarea final 
+
+<img src="imagenes/homework.gif" width="300" />
+
+---
+
+class: center, middle
+
+.linea-superior[]
+.linea-inferior[]
+
+
 <img src="imagenes/logo_portada2.png" width="200" />
 
 
